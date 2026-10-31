@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Spiral Drop</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="hud">
+  <div id="best">BEST: 0</div>
+  <div id="bar">
+    <span class="dot" id="lvA">1</span>
+    <div class="track"><i id="fill"></i></div>
+    <span class="dot" id="lvB">2</span>
+  </div>
+  <div id="score">0</div>
+  <div id="combo"></div>
+</div>
+
+<div id="fade"></div>
+<div id="toast"></div>
+
+<div class="screen" id="menu">
+  <small>// sistema online</small>
+  <h1>Spiral<br>Drop</h1>
+  <p>Arraste, ou use as setas, para girar a torre e cair pelos vãos.<br>Peças <b>listradas</b> são perigosas.<br>3 vãos seguidos ativam o modo fogo: a bola destrói qualquer peça.</p>
+  <button id="play">Iniciar</button>
+</div>
+
+<div class="screen hidden" id="over">
+  <h2>Fim de jogo</h2>
+  <p id="res"></p>
+  <button id="again">Jogar de novo</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

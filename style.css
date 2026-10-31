@@ -1,0 +1,55 @@
+:root{--neon:#00e5ff;--bg:#050b1f}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;height:100dvh;overflow:hidden;background:var(--bg);touch-action:none;user-select:none;-webkit-user-select:none;overscroll-behavior:none;-webkit-tap-highlight-color:transparent;font-family:"Orbitron","Rajdhani","Share Tech Mono",ui-monospace,"SF Mono",Consolas,monospace;transition:background .6s}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:3;background:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px)}
+#game{display:block;width:100vw;height:100vh;height:100dvh}
+
+/* HUD */
+#hud{position:fixed;inset:0;pointer-events:none;z-index:2;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) 0 env(safe-area-inset-left,0px)}
+#best{position:absolute;top:calc(env(safe-area-inset-top,0px) + 10px);left:calc(env(safe-area-inset-left,0px) + 12px);font-size:clamp(10px,2.4vmin,13px);letter-spacing:.18em;color:var(--neon);text-shadow:0 0 8px var(--neon);text-transform:uppercase;transition:color .6s,text-shadow .6s}
+#bar{position:absolute;top:calc(env(safe-area-inset-top,0px) + clamp(28px,6vmin,44px));left:50%;width:min(84vw,460px);transform:translateX(-50%);display:flex;align-items:center;filter:drop-shadow(0 0 6px var(--neon))}
+.dot{flex:none;width:clamp(30px,6.5vmin,40px);aspect-ratio:1;background:var(--neon);color:#031018;font-weight:900;font-size:clamp(11px,2.6vmin,15px);display:grid;place-items:center;clip-path:polygon(25% 5%,75% 5%,100% 50%,75% 95%,25% 95%,0 50%);z-index:1;transition:background .6s;animation:dotPulse 2.2s ease-in-out infinite}
+#lvB{animation-delay:-1.1s}
+.track{flex:1;height:8px;margin:0 -6px;background:rgba(255,255,255,.1);border-top:1px solid var(--neon);border-bottom:1px solid var(--neon);overflow:hidden;position:relative}
+#fill{display:block;position:relative;height:100%;width:0;background:linear-gradient(90deg,transparent,var(--neon));box-shadow:0 0 12px var(--neon);transition:width .25s cubic-bezier(.2,.8,.2,1)}
+#fill::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 30%,rgba(255,255,255,.75) 50%,transparent 70%);background-size:200% 100%;animation:sheen 1.6s linear infinite}
+#score{position:absolute;top:calc(env(safe-area-inset-top,0px) + clamp(76px,16vmin,112px));width:100%;text-align:center;font-size:clamp(40px,9vmin,76px);font-weight:900;color:#fff;font-variant-numeric:tabular-nums;text-shadow:0 0 12px var(--neon),0 0 32px var(--neon);will-change:transform}
+#combo{position:absolute;left:50%;top:calc(env(safe-area-inset-top,0px) + clamp(128px,25vmin,196px));transform:translateX(-50%);opacity:0;transition:opacity .25s;font-size:clamp(13px,3.2vmin,20px);font-weight:900;letter-spacing:.24em;white-space:nowrap;color:var(--neon);text-shadow:0 0 10px var(--neon)}
+#combo.on{opacity:1}
+#combo.fire{color:#ffb347;text-shadow:0 0 10px #ff7a00,0 0 26px #ff4d00;animation:flicker .22s ease-in-out infinite alternate}
+
+/* transição de nível */
+#fade{position:fixed;inset:0;z-index:4;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.22),var(--bg) 65%);transition:opacity .4s ease}
+#fade.on{opacity:1}
+
+#toast{position:fixed;left:50%;top:40%;z-index:4;transform:translate(-50%,-50%) scale(.5);opacity:0;width:90vw;color:#fff;font-size:clamp(22px,6vmin,40px);font-weight:900;text-align:center;text-transform:uppercase;letter-spacing:.12em;text-shadow:0 0 14px var(--neon),0 0 34px var(--neon);pointer-events:none;transition:opacity .3s,transform .45s cubic-bezier(.2,1.6,.4,1)}
+#toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
+/* telas */
+.screen{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,3vmin,22px);padding:max(20px,env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) max(20px,env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));text-align:center;color:#d8f6ff;background:radial-gradient(circle at 50% 40%,rgba(5,11,31,.5),rgba(2,5,16,.88));backdrop-filter:blur(3px);overflow:auto;animation:screenIn .5s ease both;transition:opacity .3s ease,transform .3s ease}
+.screen.hidden{display:none}
+.screen.out{opacity:0;transform:scale(1.06);pointer-events:none}
+.screen>*{animation:rise .65s cubic-bezier(.2,.8,.2,1) both}
+.screen>*:nth-child(2){animation-delay:.07s}
+.screen>*:nth-child(3){animation-delay:.14s}
+.screen>*:nth-child(4){animation-delay:.21s}
+.screen small{font-size:clamp(10px,2.4vmin,13px);letter-spacing:.3em;color:var(--neon);text-transform:uppercase}
+.screen h1,.screen h2{margin:0;font-weight:900;text-transform:uppercase;color:#fff;letter-spacing:.06em;text-shadow:0 0 10px var(--neon),0 0 30px var(--neon)}
+.screen h1{font-size:clamp(32px,min(12vw,11vh),76px);line-height:1}
+#menu h1{animation:rise .65s .07s cubic-bezier(.2,.8,.2,1) both,float 3.2s ease-in-out .8s infinite}
+.screen h2{font-size:clamp(28px,min(9vw,8vh),48px)}
+.screen p{margin:0;max-width:min(380px,88vw);font-size:clamp(12px,2.6vmin,15px);line-height:1.6}
+.screen p b{color:var(--neon)}
+.screen button{margin-top:6px;padding:clamp(12px,2.4vmin,16px) clamp(30px,7vmin,48px);border:2px solid var(--neon);background:rgba(0,229,255,.08);color:var(--neon);font:900 clamp(14px,3vmin,18px) inherit;font-family:inherit;letter-spacing:.25em;text-transform:uppercase;cursor:pointer;clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);box-shadow:inset 0 0 14px var(--neon);text-shadow:0 0 8px var(--neon);transition:background .15s,color .15s,transform .15s;animation:rise .65s .28s cubic-bezier(.2,.8,.2,1) both,btnPulse 2.2s ease-in-out .9s infinite}
+.screen button:hover,.screen button:active{background:var(--neon);color:#031018;text-shadow:none}
+.screen button:active{transform:scale(.95)}
+button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+
+@keyframes rise{from{opacity:0;transform:translateY(22px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes screenIn{from{opacity:0}to{opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes btnPulse{0%,100%{box-shadow:inset 0 0 12px var(--neon)}50%{box-shadow:inset 0 0 28px var(--neon)}}
+@keyframes sheen{from{background-position:200% 0}to{background-position:-200% 0}}
+@keyframes dotPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes flicker{from{filter:brightness(1)}to{filter:brightness(1.45)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
